@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "9e3af1c1-38de-459b-872a-40feda69bf52",
+		"name": "KYC API - TEST Prueba QA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "263835"
+	},
+	"item": [
+		{
+			"name": "Create Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "cc28fz17-4122-6303-1050-49f26c6daa6c",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"request_reference\": \"unique-code-1234-abz\",\r\n    \"customer_id\": \"405a22c0-f182-4a6f\",\r\n    \"customer_email\": \"john@smith.com\",\r\n    \"customer_name\": \"John Smith\",\r\n    \"customer_registry\": \"John Smith\",\r\n    \"customer_id_type\": \"DNI\",\r\n    \"customer_id_number\": \"12345678\",\r\n    \"customer_dob\": \"1628899200\",\r\n    \"customer_province\": \"LIMA_CALLAO\",\r\n    \"bank_code\": \"003\",\r\n    \"bank_account_number\": \"10830024177201\",\r\n    \"bank_account_cci\": \"\",\r\n    \"bank_account_currency\": \"USD\",\r\n    \"callback_url\": \"https://lj1.requestcatcher.com/test\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kyc-api-functionapp-stg.azurewebsites.net/api/kyc",
+					"protocol": "https",
+					"host": [
+						"kyc-api-functionapp-stg",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"kyc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Request",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "cc28fz17-4122-6303-1050-49f26c6daa6c",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://kyc-api-functionapp-stg.azurewebsites.net/api/kyc/280160",
+					"protocol": "https",
+					"host": [
+						"kyc-api-functionapp-stg",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"kyc",
+						"280160"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

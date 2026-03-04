@@ -1,0 +1,83 @@
+Este script de Python está diseñado para automatizar el proceso de búsqueda y reserva de citas para la Inspección Técnica de Vehículos (ITV) en el portal de la Junta de Extremadura. Utiliza Selenium para la interacción con el navegador web y también integra un sistema de notificaciones por correo electrónico y WhatsApp.
+
+1. Configuración Inicial y Dependencias
+
+El script comienza importando las librerías necesarias:
+
+    selenium: Para controlar el navegador y automatizar la interacción con la página web.
+
+    Smtplib y email.mime: Para construir y enviar notificaciones por correo electrónico a través de un servidor SMTP (en este caso, Gmail).
+
+    Pywhatkit: Para enviar un mensaje de notificación a través de WhatsApp.
+
+    Time y datetime: Para gestionar pausas y la hora de envío de mensajes.
+
+A continuación, se define un bloque de variables de configuración que deben ser ajustadas por el usuario para personalizar la búsqueda:
+
+    Datos de la cita: url, ubicacion, tipo_vehiculo, tipo_inspeccion.
+
+    Rango de búsqueda: mes_inicial, dia_inicial, mes_final, dia_final, hora_inicial, hora_final. Esto permite definir con precisión el período en el que se desea encontrar la cita.
+
+    Datos del usuario y vehículo: numero_matricula, Nombre_Completo, Numero_Telefono.
+
+    Credenciales y destinatarios de notificaciones: Correos de origen/destino y número de teléfono.
+
+Nota importante: La contraseña del correo electrónico (hrkx ewxl noxz fxjo) está hardcodeada. Se recomienda encarecidamente gestionarla a través de variables de entorno o un sistema de gestión de secretos para evitar exponerla en el código.
+
+2. Flujo de Automatización con Selenium
+
+El núcleo del script es un proceso secuencial que simula los pasos que un usuario realizaría manualmente en el sitio web.
+
+    Inicio y Navegación Inicial:
+
+        Se instancia un nuevo controlador de Chrome y se navega a la URL de solicitud de citas.
+
+        El script selecciona secuencialmente el tipo de inspección, el tipo de vehículo y la ubicación, haciendo clic en el botón "SIGUIENTE" después de cada paso. Se utilizan pausas (time.sleep()) para asegurar que la página se cargue completamente antes de cada acción.
+
+    Bucle de Búsqueda de Fecha y Hora:
+
+        El script entra en un bucle (while not encontrado) que se ejecuta hasta que se encuentra una fecha y hora que cumplan con los criterios definidos.
+
+        Búsqueda de día:
+
+            Intenta localizar los días disponibles en el calendario (hb-day-active).
+
+            Si no encuentra días en el mes actual, avanza al siguiente mes, refresca la página y reinicia la búsqueda.
+
+            Si hay días disponibles, itera sobre ellos y comprueba si la fecha (fecha) se encuentra dentro del rango (dia_inicial/mes_inicial a dia_final/mes_final). La lógica está preparada para manejar tanto rangos dentro del mismo mes como rangos que abarcan varios meses.
+
+        Búsqueda de hora:
+
+            Una vez que se selecciona un día válido, el script avanza a la página de selección de hora.
+
+            Itera sobre las horas disponibles y selecciona la primera que se encuentre dentro del rango (hora_inicial y hora_final).
+
+            Si no encuentra una hora válida en el día seleccionado, el script retrocede (driver.back()) para intentar con el siguiente día disponible.
+
+    Ingreso de Datos del Usuario:
+
+        Cuando se ha asegurado una fecha y hora, el script procede a rellenar los campos de información personal: matrícula, nombre completo y número de teléfono, avanzando entre cada paso.
+
+    Confirmación (Desactivada):
+
+        La línea de código que haría clic en el botón "confirmar cita" está comentada intencionadamente. Esto es una medida de seguridad crucial para evitar que el script complete la reserva automáticamente durante las pruebas o ejecuciones de depuración. Para que el script reserve la cita, esta línea debe ser descomentada.
+
+3. Sistema de Notificaciones
+
+Una vez que el flujo de Selenium llega al final (justo antes de la confirmación), el script activa las notificaciones.
+
+    Notificación por Email:
+
+        Crea un mensaje de correo electrónico (MIMEMultipart) con los detalles de la cita reservada (nombre, fecha, hora, matrícula).
+
+        Se conecta al servidor SMTP de Gmail, se autentica y envía el correo al destinatario especificado.
+
+    Notificación por WhatsApp:
+
+        Utiliza pywhatkit.sendwhatmsg() para enviar un mensaje de WhatsApp con la misma información de la cita.
+
+        El mensaje se programa para ser enviado un minuto después de la ejecución del script, ya que pywhatkit abre WhatsApp Web y necesita tiempo para cargar y enviar el mensaje.
+
+4. Finalización
+
+Finalmente, el script espera 3 minutos (time.sleep(180)) para dar tiempo a que se envíe el mensaje de WhatsApp y luego cierra la instancia del navegador con driver.quit() para liberar los recursos.

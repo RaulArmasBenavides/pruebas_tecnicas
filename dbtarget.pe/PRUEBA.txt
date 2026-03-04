@@ -1,0 +1,7 @@
+La primera parte de la prueba consiste en desarrollar una automatización de pruebas de una REST API. Esta puede ser desarrollada con Python, .Net (C#) o Postman.
+
+Adjunto los archivos para la prueba técnica
+Documento del API, campos entrada y salida
+Excel con los casos de prueba, completar 6 a más casos de prueba
+Definición del API en formato Postman
+La segunda parte de la prueba es revisar la calidad de algunos bloques de código fuente C# existentes (dando una crítica a nivel de seguridad y calidad). Adjunto documento Word.
